@@ -34,8 +34,10 @@ describe('Ballot', function () {
     })
 
     it('has zero votes for all proposals', async function () {
-      // TODO
-      throw Error('Not implemented')
+      for (let index = 0; index < PROPOSALS.length; index++) {
+        const proposal = await ballotContract.proposals(index)
+        expect(proposal.voteCount).to.eq(0)
+      }
     })
     it('sets the deployer address as chairperson', async function () {
       // TODO
