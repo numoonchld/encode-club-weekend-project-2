@@ -58,13 +58,11 @@ describe('HelloWorld', function () {
   it('Should change text correctly', async function () {
     const accounts = await ethers.getSigners()
 
-    const currentText = await helloWorldContract.helloWorld()
-
+    const oldText = await helloWorldContract.helloWorld()
     const ownerAccount = accounts[0]
 
     await helloWorldContract.connect(ownerAccount).setText('Hardhat: Test text')
-
-    expect(currentText).to.not.eq('Hardhat: Test text')
+    expect(oldText).to.not.eq('Hardhat: Test text')
 
     const newText = await helloWorldContract.helloWorld()
     expect(newText).to.eq('Hardhat: Test text')
