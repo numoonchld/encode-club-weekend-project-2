@@ -57,8 +57,13 @@ describe('Ballot', function () {
 
   describe('when the chairperson interacts with the giveRightToVote function in the contract', function () {
     it('gives right to vote for another address', async function () {
-      // TODO
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const anotherAddress = accounts[1].address
+
+      await ballotContract.connect(accounts[0]).giveRightToVote(anotherAddress)
+
+      const voterDetails = await ballotContract.voters(anotherAddress)
+      expect(voterDetails.weight).to.eq(1)
     })
     it('can not give right to vote for someone that has voted', async function () {
       // TODO
