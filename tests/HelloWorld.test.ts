@@ -47,8 +47,11 @@ describe('HelloWorld', function () {
   })
 
   it('Should not allow anyone other than owner to change text', async function () {
-    // TODO
-    throw Error('Not implemented')
+    const accounts = await ethers.getSigners()
+
+    await expect(
+      helloWorldContract.connect(accounts[1]).setText(accounts[1].address),
+    ).to.be.revertedWith('Caller is not the owner')
   })
 
   it('Should change text correctly', async function () {
