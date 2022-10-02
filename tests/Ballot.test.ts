@@ -178,18 +178,27 @@ describe('Ballot', function () {
   })
 
   describe('when someone interact with the winningProposal function before any votes are cast', function () {
-    it('should return 0', async () => {})
+    it('should return 0', async () => {
+      expect(await ballotContract.winningProposal()).to.eq(0)
+    })
   })
 
   describe('when someone interact with the winningProposal function after one vote is cast for the first proposal', function () {
     // TODO
     it('should return 0', async () => {
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const votingAccount = accounts[3]
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(votingAccount.address)
+      await ballotContract.connect(votingAccount).vote(0)
+
+      expect(await ballotContract.winningProposal()).to.eq(0)
     })
   })
 
   describe('when someone interact with the winnerName function before any votes are cast', function () {
-    // TODO
     it('should return name of proposal 0', async () => {
       throw Error('Not implemented')
     })
