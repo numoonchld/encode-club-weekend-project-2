@@ -200,21 +200,80 @@ describe('Ballot', function () {
 
   describe('when someone interact with the winnerName function before any votes are cast', function () {
     it('should return name of proposal 0', async () => {
-      throw Error('Not implemented')
+      // console.log(await ballotContract.winnerName())
+      expect(await ballotContract.winnerName()).to.eq(
+        ethers.utils.formatBytes32String(PROPOSALS[0]),
+      )
     })
   })
 
   describe('when someone interact with the winnerName function after one vote is cast for the first proposal', function () {
-    // TODO
     it('should return name of proposal 0', async () => {
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const votingAccount = accounts[3]
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(votingAccount.address)
+      await ballotContract.connect(votingAccount).vote(0)
+
+      expect(await ballotContract.winnerName()).to.eq(
+        ethers.utils.formatBytes32String(PROPOSALS[0]),
+      )
     })
   })
 
   describe('when someone interact with the winningProposal function and winnerName after 5 random votes are cast for the proposals', function () {
-    // TODO
     it('should return the name of the winner proposal', async () => {
-      throw Error('Not implemented')
+      // const newBallotFactory = await ethers.getContractFactory('Ballot')
+      // const newBallotContract = await newBallotFactory.deploy(
+      //   convertStringArrayToBytes32(PROPOSALS),
+      // )
+      // await newBallotContract.deployed()
+
+      const accounts = await ethers.getSigners()
+
+      const accountA = accounts[4]
+      const accountB = accounts[5]
+      const accountC = accounts[6]
+      const accountD = accounts[7]
+      const accountE = accounts[8]
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accountA.address)
+
+      await ballotContract.connect(accountA).vote(0)
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accountB.address)
+
+      await ballotContract.connect(accountB).vote(1)
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accountC.address)
+
+      await ballotContract.connect(accountC).vote(0)
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accountD.address)
+
+      await ballotContract.connect(accountD).vote(2)
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accountE.address)
+
+      await ballotContract.connect(accountE).vote(0)
+
+      const winnerProposalName = await ballotContract.winnerName()
+
+      expect(ethers.utils.formatBytes32String(PROPOSALS[0])).to.include(
+        winnerProposalName,
+      )
     })
   })
 })

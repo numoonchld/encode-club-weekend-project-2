@@ -161,6 +161,21 @@ contract Ballot {
         }
     }
 
+    // External functions that are view
+    // ...
+
+    // Calls winningProposal() function to get the index
+    // of the winner contained in the proposals array and then
+    // returns the name of the winner
+    function winnerName() external view returns (bytes32 winnerName_) {
+        winnerName_ = proposals[winningProposal()].name;
+    }
+
+    // External functions that are pure
+    // ...
+
+    // Public functions
+
     /// @dev Computes the winning proposal taking all
     /// previous votes into account.
     function winningProposal() public view returns (uint256 winningProposal_) {
@@ -172,15 +187,6 @@ contract Ballot {
             }
         }
     }
-
-    // External functions that are view
-    // ...
-
-    // External functions that are pure
-    // ...
-
-    // Public functions
-    // ...
 
     // Internal functions
     // ...
