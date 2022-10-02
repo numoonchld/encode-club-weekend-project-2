@@ -100,9 +100,18 @@ describe('Ballot', function () {
   })
 
   describe('when the voter interact with the vote function in the contract', function () {
-    // TODO
     it('should register the vote', async () => {
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const someoneVoting = accounts[1]
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(someoneVoting.address)
+
+      await ballotContract.connect(someoneVoting).vote(0)
+
+      const voterDetails = await ballotContract.voters(someoneVoting.address)
+      expect(voterDetails.weight).to.eq(1)
     })
   })
 
