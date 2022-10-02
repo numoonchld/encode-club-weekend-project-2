@@ -66,12 +66,36 @@ describe('Ballot', function () {
       expect(voterDetails.weight).to.eq(1)
     })
     it('can not give right to vote for someone that has voted', async function () {
-      // TODO
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const someoneVoting = accounts[1]
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(someoneVoting.address)
+
+      await ballotContract.connect(someoneVoting).vote(0)
+
+      await expect(
+        ballotContract
+          .connect(accounts[0])
+          .giveRightToVote(someoneVoting.address),
+      ).to.be.revertedWith('The voter already voted.')
     })
     it('can not give right to vote for someone that has already voting rights', async function () {
-      // TODO
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const someoneVoting = accounts[1]
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(someoneVoting.address)
+
+      await ballotContract.connect(someoneVoting).vote(0)
+
+      await expect(
+        ballotContract
+          .connect(accounts[0])
+          .giveRightToVote(someoneVoting.address),
+      ).to.be.revertedWith('The voter already voted.')
     })
   })
 
