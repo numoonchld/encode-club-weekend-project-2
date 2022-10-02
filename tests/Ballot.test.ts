@@ -141,31 +141,44 @@ describe('Ballot', function () {
   })
 
   describe('when the an attacker interact with the giveRightToVote function in the contract', function () {
-    // TODO
     it('should revert', async () => {
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const attackerAccount = accounts[9]
+      const randomAccount = accounts[8]
+
+      await expect(
+        ballotContract
+          .connect(attackerAccount)
+          .giveRightToVote(randomAccount.address),
+      ).to.be.revertedWith('Only chairperson can give right to vote.')
     })
   })
 
   describe('when the an attacker interact with the vote function in the contract', function () {
-    // TODO
     it('should revert', async () => {
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const attackerAccount = accounts[9]
+
+      await expect(
+        ballotContract.connect(attackerAccount).vote(1),
+      ).to.be.revertedWith('Has no right to vote')
     })
   })
 
   describe('when the an attacker interact with the delegate function in the contract', function () {
-    // TODO
     it('should revert', async () => {
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const attackerAccount = accounts[9]
+      const randomAccount = accounts[9]
+
+      await expect(
+        ballotContract.connect(attackerAccount).delegate(randomAccount.address),
+      ).to.be.revertedWith('You have no right to vote')
     })
   })
 
   describe('when someone interact with the winningProposal function before any votes are cast', function () {
-    // TODO
-    it('should return 0', async () => {
-      throw Error('Not implemented')
-    })
+    it('should return 0', async () => {})
   })
 
   describe('when someone interact with the winningProposal function after one vote is cast for the first proposal', function () {
