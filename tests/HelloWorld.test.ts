@@ -32,8 +32,18 @@ describe('HelloWorld', function () {
   })
 
   it('Should execute transferOwnership correctly', async function () {
-    // TODO
-    throw Error('Not implemented')
+    const accounts = await ethers.getSigners()
+
+    const ownerAccount = accounts[0]
+    const newOwnerAccount = accounts[1]
+
+    await helloWorldContract
+      .connect(ownerAccount)
+      .transferOwnership(newOwnerAccount.address)
+
+    const contractOwner = await helloWorldContract.owner()
+
+    expect(contractOwner).to.equal(accounts[1].address)
   })
 
   it('Should not allow anyone other than owner to change text', async function () {
