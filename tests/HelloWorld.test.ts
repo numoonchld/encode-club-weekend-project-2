@@ -9,6 +9,7 @@ describe('HelloWorld', function () {
     const helloWorldFactory = await ethers.getContractFactory('HelloWorld')
     helloWorldContract = (await helloWorldFactory.deploy()) as HelloWorld
     await helloWorldContract.deployed()
+    // first account that is displayed in the Hardhats accounts is the default option for deploying address
   })
 
   it('Should give a Hello World', async function () {
@@ -55,7 +56,17 @@ describe('HelloWorld', function () {
   })
 
   it('Should change text correctly', async function () {
-    // TODO
-    throw Error('Not implemented')
+    const accounts = await ethers.getSigners()
+
+    const currentText = await helloWorldContract.helloWorld()
+
+    const ownerAccount = accounts[0]
+
+    await helloWorldContract.connect(ownerAccount).setText('Hardhat: Test text')
+
+    expect(currentText).to.not.eq('Hardhat: Test text')
+
+    const newText = await helloWorldContract.helloWorld()
+    expect(newText).to.eq('Hardhat: Test text')
   })
 })
