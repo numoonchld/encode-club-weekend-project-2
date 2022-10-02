@@ -32,7 +32,6 @@ describe('Ballot', function () {
         )
       }
     })
-
     it('has zero votes for all proposals', async function () {
       for (let index = 0; index < PROPOSALS.length; index++) {
         const proposal = await ballotContract.proposals(index)
@@ -40,8 +39,12 @@ describe('Ballot', function () {
       }
     })
     it('sets the deployer address as chairperson', async function () {
-      // TODO
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const contractDeployer = accounts[0].address
+
+      const chairPerson = await ballotContract.chairperson()
+
+      expect(chairPerson).to.eq(contractDeployer)
     })
     it('sets the voting weight for the chairperson as 1', async function () {
       // TODO
