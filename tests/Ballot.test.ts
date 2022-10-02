@@ -47,8 +47,11 @@ describe('Ballot', function () {
       expect(chairPerson).to.eq(contractDeployer)
     })
     it('sets the voting weight for the chairperson as 1', async function () {
-      // TODO
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const contractDeployer = accounts[0].address
+
+      const voterDetails = await ballotContract.voters(contractDeployer)
+      expect(voterDetails.weight).to.eq(1)
     })
   })
 

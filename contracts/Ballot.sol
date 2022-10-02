@@ -34,6 +34,17 @@ contract Ballot {
     /// @dev dynamically-sized array of `Proposal` structs.
     Proposal[] public proposals;
 
+    // This variable is a new complex type (struct) which represents a single voter
+    struct Voter {
+        uint256 weight; // weight is accumulated by delegation
+        bool voted; // if true, that person already voted
+        address delegate; // person delegated to
+        uint256 vote; // index of the voted proposal
+    }
+
+    // Map address to Voter complex type (struct) stores a `Voter` struct for each possible address
+    mapping(address => Voter) public voters;
+
     /**
       @notice sets at deployment the chairperson address, ballot-options (proposals), 
       @dev 
@@ -42,6 +53,9 @@ contract Ballot {
     constructor(bytes32[] memory proposalNames) {
         // assign deployer address as chairperson
         chairperson = msg.sender;
+
+        // set weight of chairperson's vote
+        voters[chairperson].weight = 1;
 
         // For each of the provided proposal names,
         // create a new proposal object and add it
