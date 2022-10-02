@@ -67,34 +67,34 @@ describe('Ballot', function () {
     })
     it('can not give right to vote for someone that has voted', async function () {
       const accounts = await ethers.getSigners()
-      const someoneVoting = accounts[1]
+      const accountVoting = accounts[1]
 
       await ballotContract
         .connect(accounts[0])
-        .giveRightToVote(someoneVoting.address)
+        .giveRightToVote(accountVoting.address)
 
-      await ballotContract.connect(someoneVoting).vote(0)
+      await ballotContract.connect(accountVoting).vote(0)
 
       await expect(
         ballotContract
           .connect(accounts[0])
-          .giveRightToVote(someoneVoting.address),
+          .giveRightToVote(accountVoting.address),
       ).to.be.revertedWith('The voter already voted.')
     })
     it('can not give right to vote for someone that has already voting rights', async function () {
       const accounts = await ethers.getSigners()
-      const someoneVoting = accounts[1]
+      const accountVoting = accounts[1]
 
       await ballotContract
         .connect(accounts[0])
-        .giveRightToVote(someoneVoting.address)
+        .giveRightToVote(accountVoting.address)
 
-      await ballotContract.connect(someoneVoting).vote(0)
+      await ballotContract.connect(accountVoting).vote(0)
 
       await expect(
         ballotContract
           .connect(accounts[0])
-          .giveRightToVote(someoneVoting.address),
+          .giveRightToVote(accountVoting.address),
       ).to.be.revertedWith('The voter already voted.')
     })
   })
@@ -102,23 +102,41 @@ describe('Ballot', function () {
   describe('when the voter interact with the vote function in the contract', function () {
     it('should register the vote', async () => {
       const accounts = await ethers.getSigners()
-      const someoneVoting = accounts[1]
+      const accountVoting = accounts[1]
 
       await ballotContract
         .connect(accounts[0])
-        .giveRightToVote(someoneVoting.address)
+        .giveRightToVote(accountVoting.address)
 
-      await ballotContract.connect(someoneVoting).vote(0)
+      await ballotContract.connect(accountVoting).vote(0)
 
-      const voterDetails = await ballotContract.voters(someoneVoting.address)
+      const voterDetails = await ballotContract.voters(accountVoting.address)
       expect(voterDetails.weight).to.eq(1)
     })
   })
 
   describe('when the voter interact with the delegate function in the contract', function () {
-    // TODO
     it('should transfer voting power', async () => {
-      throw Error('Not implemented')
+      const accounts = await ethers.getSigners()
+      const accountSendingVotingPower = accounts[1]
+      const accountReceivingVotingPower = accounts[2]
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accountSendingVotingPower.address)
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accountReceivingVotingPower.address)
+
+      await ballotContract
+        .connect(accountSendingVotingPower)
+        .delegate(accountReceivingVotingPower.address)
+
+      expect(
+        (await ballotContract.voters(accountSendingVotingPower.address))
+          .delegate,
+      ).to.eq(accountReceivingVotingPower.address)
     })
   })
 
