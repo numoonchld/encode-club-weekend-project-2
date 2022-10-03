@@ -59,7 +59,7 @@ async function main() {
     .giveRightToVote(teamMemberAccountB.address)
   console.log(
     'Account with address: ',
-    teamMemberAccountA.address,
+    teamMemberAccountB.address,
     'has voter weight: \n',
     (await localBallotContract.voters(teamMemberAccountB.address)).weight,
     '\n\n',
@@ -72,7 +72,7 @@ async function main() {
     .giveRightToVote(teamMemberAccountC.address)
   console.log(
     'Account with address: ',
-    teamMemberAccountA.address,
+    teamMemberAccountC.address,
     'has voter weight: \n',
     (await localBallotContract.voters(teamMemberAccountC.address)).weight,
     '\n\n',
