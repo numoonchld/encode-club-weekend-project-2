@@ -35,7 +35,7 @@ export default async function goerliNetworkMetamaskConnect(
     )
     await ballotContract.deployed()
 
-    return ballotContract
+    return [ballotContract, signer, wallet, provider]
   }
 }
 
