@@ -5,6 +5,7 @@ export default async function localNetworkConnect(PROPOSALS: string[]) {
   console.log('Running Local Network Connect and Deploy!')
   console.log(
     'Ballot proposals array received for Contract Deployment:',
+    '\n',
     PROPOSALS,
   )
 
